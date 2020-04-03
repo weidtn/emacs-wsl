@@ -419,8 +419,17 @@ Looks like this is getting better if one has Windows 10 Version 1903 or newer:
 
 * FAQ
 
-** Where is the root folder located?
+** How do I move inside of Doom Emacs?
+Doom uses evil-mode which enables vim-keybindings inside of emacs. They are way
+better than vanilla emacs keybindings and you should learn them to move inside
+of your text.
+- [[https://github.com/noctuid/evil-guide][Evil guide]]
 
+More special keybindings for Doom Emacs:
+- [[https://medium.com/urbint-engineering/emacs-doom-for-newbies-1f8038604e3b][Emacs Doom for Newbies]]
+- [[https://noelwelsh.com/posts/2019-01-10-doom-emacs.html][Doom Emacs Workflows]]
+
+** Where is the root folder located?
 It's in ~%LOCALAPPDATA%\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs~
 See [[https://superuser.com/a/1280916]].
 
