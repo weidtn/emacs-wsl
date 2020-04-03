@@ -4,7 +4,7 @@
 
 This guide shows you how to run Emacs with the Windows Subsystem for Linux WSL
 in Windows 10. Emacs can either be run with a graphical display or directly in
-the terminal.
+the terminal. Doom Emacs will be used because I think it is better than vanilla emacs.
 
 This guide is using Ubuntu 18.04 LTS as Linux distribution and lxde as desktop.
 
@@ -20,6 +20,7 @@ This guide is using Ubuntu 18.04 LTS as Linux distribution and lxde as desktop.
 - [[#configure-wsl][Configure WSL]]
 - [[#install-emacs][Install Emacs]]
 - [[#run-emacs-in-terminal][Run Emacs in terminal]]
+- [[#install-doom-emacs][Install Doom Emacs]]
 - [[#run-emacs-in-graphical-display][Run Emacs in graphical display]]
 - [[#remarks][Remarks]]
 - [[#faq][FAQ]]
@@ -243,7 +244,7 @@ Restart WSL.
 
 * Install Emacs
 
-This installs all dependencies for Emacs and then installs Emacs 26.3:
+** Emacs 26: This installs all dependencies for Emacs and then installs Emacs 26.3:
 
 #+BEGIN_SRC shell
   ## install dependencies (got those from all over the net)
@@ -273,7 +274,15 @@ This installs all dependencies for Emacs and then installs Emacs 26.3:
   rm ~/emacs-26.3.tar.gz
 #+END_SRC
 
+** Emacs 27
 See[[file:emacs-27.sh][ emacs-27.sh]] to install Emacs 27 instead.
+** Emacs-Snapshot (always newest):
+
+#+BEGIN_SRC shell
+sudo add-apt-repository ppa:ubuntu-elisp/ppa
+sudo apt-get update
+sudo apt install emacs-snapshot
+#+END_SRC
 
 * Run Emacs in terminal
 
@@ -281,10 +290,25 @@ Run Emacs with ~emacs -nw~ to see if it is working. You can also see what path
 it is using as home with ~C-h v user-emacs-directory~. That's where you can place
 your init.el etc.
 
+* Install Doom Emacs
+First we need to install ripgrep dependency for Doom:
+
+ripgrep for WSL Ubuntu:
+#+BEGIN_SRC shell
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
+sudo dpkg -i ripgrep_11.0.2_amd64.deb
+#+END_SRC
+
+Clone doom config over your vanilla emacs config and install:
+#+BEGIN_SRC shell
+git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
+~/.emacs.d/bin/doom install
+#+END_SRC
+
 * Run Emacs in graphical display
 
-To be able to run Emacs with a graphical display you need to install a Linux
-desktop and a Windows X server.
+To be able to run Emacs with a graphical display you need to install (a Linux
+desktop and) a Windows X server.
 
 ** Install Windows X server
 
@@ -296,7 +320,7 @@ Using open source VcXsrv:
 - Download it from [[https://sourceforge.net/projects/vcxsrv/]]
 - Install it by executing the exe
 
-** Install the Linux desktop
+** (Optional) Install the Linux desktop
 
 Using lxde (lightweight one):
 
@@ -317,6 +341,7 @@ Start XLaunch and use the defaults:
 - Leave checkboxes, Next
 - Finish
 
+This will be running in the background and wait for a Linux window to display.
 **** Make a Shortcut
 
 Make a shortcut to vcxsrv.exe and then change its target to:
@@ -339,7 +364,7 @@ yout don't want this. Then it should use your default keyboard layout):
   export DISPLAY=:0
   export LIBGL_ALWAYS_INDIRECT=1
   # OPTIONAL Set the keyboard layout to US
-  setxkbmap -layout us
+  # setxkbmap -layout us
   setsid emacs
   exit
 #+END_SRC
@@ -352,18 +377,18 @@ To not have to type this over and over make an alias in "~/.bashrc" or if you
 installed zsh in "~/.zshrc":
 
 #+BEGIN_SRC shell
-  alias eme='
+  alias emacs='
   export DISPLAY=:0.0
   export LIBGL_ALWAYS_INDIRECT=1
-  setxkbmap -layout us
+  #setxkbmap -layout us
   setsid emacs
   exit
   '
 #+END_SRC
 
-Now you can fire wsl up and run ~eme~.
+Now you can fire wsl up and run ~emacs~.
 
-*** Start distribution & run Emacs in there
+*** (Optional) Start distribution & run Emacs in there
 
 You can of course also run the distribution (after running the xserver) and then
 run Emacs in there. To start the disttribution (in this case lxde):
@@ -372,7 +397,7 @@ run Emacs in there. To start the disttribution (in this case lxde):
   export DISPLAY=:0
   export LIBGL_ALWAYS_INDIRECT=1
   # OPTIONAL Set the keyboard layout to US
-  setxkbmap -layout us
+  # setxkbmap -layout us
   startlxde
 #+END_SRC
 
